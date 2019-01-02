@@ -18,6 +18,14 @@ ReactDOMTextComponent.prototype.mountComponent = function (rootID) {
   return '<span data-reactid="' + rootID + '">' + this._currentElement + '</span>'
 }
 
+ReactDOMTextComponent.prototype.receiveComponent = function (nextText) {
+  var nextStringText = '' + nextText
+  if (nextStringText !== this._currentElement) {
+    this._currentElement = nextStringText
+    $('[data-reactid="' + this._rootNodeId + '"]').html(this._currentElement)
+  }
+}
+
 /**
  * 2. commponent类，用来操作DOM节点元素
  * @param {*} element 
@@ -75,6 +83,45 @@ ReactDOMComponent.prototype.mountComponent = function (rootID) {
 
   // 返回整个html内容
   return tagOpen + '>' + content + tagClose
+}
+
+ReactDOMComponent.prototype.receiveComponent = function (nextElement) {
+
+}
+
+ReactDOMComponent.prototype._updateDOMProperties = function (lastProps, nextProps) {
+
+}
+
+ReactDOMComponent.prototype._updateDOMChildren = function (nextChildrenElements) {
+
+}
+
+// 差异更新的几种类型
+var UPDATE_TYPES = {
+  MOVE_EXISTING: 1,
+  REMOVE_NODE: 2,
+  INSERT_MARKUP: 3
+}
+
+function flattenChildren (componentChildren) {
+
+}
+
+function generateComponentChildren () {
+
+}
+
+ReactDOMComponent.prototype._diff = function (diffQueue, nextChildrenElements) {
+
+}
+
+function insertChildAt (parentNode, childNode, index) {
+
+}
+
+ReactDOMComponent.prototype._patch = function (updates) {
+
 }
 
 /**
@@ -145,8 +192,29 @@ ReactCompositeComponent.prototype.receiveComponent = function (nextElement, newS
     // 调用componentDidUpdate标识更新完成
     instance.componentDidUpdate && instance.componentDidUpdate()
   } else {
-    // ...
+    // @TODO 重新渲染
+    var thisID = this._rootNodeId
+    this._renderedComponent = this._instantiateReactComponent(nextRenderredElement)
+    //重新生成对应的元素内容
+    var nextMarkup = _renderedComponent.mountComponent(thisID);
+    //替换整个节点
+    $('[data-reactid=' + this._rootNodeID + ']').replaceWith(nextMarkup)
   }
+}
+
+// 用来判定两个element需不需要更新
+// key不一致，直接返回false，重新渲染
+var _shouldUpdateReactComponent = function (prevElement, nextElement) {
+ if (prevElement !== null && nextElement !== null) {
+  var prevType = typeof prevElement
+  var nextType = typeof nextElement
+  if (prevType === 'string' || prevType === 'number') {
+    return nextType === 'string' || nextType === 'number'
+  } else {
+    return nextType === 'object' && prevElement.type === nextElement.type && prevElement.key === nextElement.key
+  }
+ }
+ return false
 }
 
 // 4. component实例
