@@ -1,0 +1,69 @@
+<html>
+<head>
+  <title>test</title>
+  <link rel="icon" href="https://reactjs.org/favicon.ico">
+  <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="app2"></div>
+  <div id="app3"></div>
+  <script src="./index.js"></script>
+  <script type="text/javascript">
+    // 第一次调用
+    var app = document.getElementById('app')
+    var app2 = document.getElementById('app2')
+    var app3 = document.getElementById('app3')
+    var app4 = document.getElementById('app4')
+    React.render('hello, world',app)
+    // 第二次调用
+    var helloHandler = function () {
+      console.log('hello')
+    }
+    var element = React.createElement('div', {
+      id: 'test',
+      title: 'clickhandler',
+      onclick: helloHandler
+    }, '点击我')
+    React.render(element, app2)
+    // 第三次调用
+    var HelloMessage = React.createClass({
+      getInitialState: function () {
+        return {
+          name: 'say:'
+        }
+      },
+      componentWillMount: function () {
+        console.log('我要开始渲染了....')
+      },
+      componentDidMount: function () {
+        console.log('我已经渲染完毕了...')
+      },
+      render: function () {
+        return React.createElement('div', null, this.state.name, 'Hello ', this.props.name)
+      }
+    })
+    React.render(React.createElement(HelloMessage, {name: 'zhangsan'}), app3)
+    // 第四次调用
+    var Message = React.createClass({
+      getInitialState: function () {
+        return {
+          name: 'say'
+        }
+      },
+      changeType: function () {
+        this.props.name = '异步更新。lastIndex'
+        this.setState({
+          name: 'shoottt:'
+        })
+      },
+      render: function () {
+        return React.createElement('div', {
+          onclick: this.changeType.bind(this)
+        }, this.state.name, 'Hello ', this.props.name)
+      }
+    })
+    React.render(React.createElement(Message, {name: 'LiSi'}), app4)
+  </script>
+</body>
+</html>

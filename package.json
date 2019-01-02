@@ -1,0 +1,14 @@
+{
+  "name": "react-mini",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "http-server -a 127.0.0.1 -p 8881"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
